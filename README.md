@@ -5,7 +5,7 @@ Automatic audio transcriptor and aligner
 
 ## Install Anaconda / Miniconda
 
-Install (Anaconda)[https://docs.anaconda.com/free/anaconda/install/index.html] or (Miniconda)[https://docs.anaconda.com/free/miniconda/miniconda-install/]
+Install [Anaconda](https://docs.anaconda.com/free/anaconda/install/index.html) or [Miniconda](https://docs.anaconda.com/free/miniconda/miniconda-install/)
 
 
 ## Install dependencies
