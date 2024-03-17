@@ -17,7 +17,7 @@ conda activate base
 conda install -c conda-forge mamba
 ```
 
-After that, you might need to restart the terminal to activate mamba.
+After that, you might need to run `mamba init` and restart the terminal to activate mamba.
 
 Then, create the environment and install the dependencies:
 
