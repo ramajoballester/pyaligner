@@ -1,0 +1,78 @@
+[build-system]
+requires = ['setuptools', 'setuptools-scm']
+build-backend = 'setuptools.build_meta'
+
+[project]
+name = 'pyaligner'
+version = '0.1.0'
+authors = [
+    {name='Álvaro Ramajo-Ballester', email='aramajo@ing.uc3m.es'},
+]
+description = 'Automatic audio transcriptor and aligner'
+readme = 'README.md'
+# requires-python = '>=3.8,<3.10'
+requires-python = '>=3.8,<3.11'
+classifiers = [
+    'Programming Language :: Python :: 3',
+    # 'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    # 'Programming Language :: Python :: 3.11',
+    # 'Programming Language :: Python :: 3.12',
+    'License :: OSI Approved :: GNU Affero General Public License v3',
+    'Natural Language :: English',
+    'Operating System :: POSIX :: Linux',
+]
+
+keywords = [
+    'python',
+    'pytorch',
+    'deep-learning',
+    'audio',
+    'audio-transcription',
+    'audio-alignment'
+]
+
+dependencies = [
+    # 'torch',
+    # 'mmcv>=2.0.0rc4',
+    # 'mmdet>=3.0.0',
+    # 'mmdet3d>=1.1.0',
+    # 'mmengine',
+    # 'seaborn'
+    'openai-whisper',
+    'montreal-forced-aligner',
+    'ipykernel',
+    'PyQt5',
+]
+
+[project.optional-dependencies]
+dev = [
+
+]
+docs = [
+    'sphinx==7.1.2',
+    'sphinx_rtd_theme==1.3.0',
+    'sphinx-copybutton==0.5.1',
+    'sphinx-markdown-tables==0.0.17',
+    'sphinx-tabs',
+    'numpydoc==1.5.0',
+    'myst-parser==2.0.0',
+    # 'recommonmark==0.7.1',
+    # 'sphinx_design',
+    # 'furo',
+    # 'sphinx-material'
+]
+full = ['pyaligner[docs]']
+
+[tool.setuptools.packages]
+find = {namespaces = false, exclude = ['test']}
+
+[project.scripts]
+pyaligner = "pyaligner.scripts.aligner:main"
+
+
+[project.urls]
+'Homepage' = 'https://github.com/ramajoballester/pyaligner'
+'Bug Tracker' = 'https://github.com/ramajoballester/pyaligner/issues'
