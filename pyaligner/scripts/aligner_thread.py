@@ -5,6 +5,7 @@ import torch
 import whisper
 from tqdm import tqdm
 from pyaligner.utils import utils
+from PyQt5.QtWidgets import QApplication
 
 
 def align_action(args, progress_signal=None, error_signal=None):
@@ -19,10 +20,11 @@ def align_action(args, progress_signal=None, error_signal=None):
                 if file.endswith('.txt'):
                     filenames.append(os.path.join(root, file))
         filenames.sort()
-        print(f'Aligning {len(filenames)} audio-transcription files')
-        # Change directory to the input folder
-        os.chdir(folder_path)
-        print(f'Checking MFA models for {args.language} language')
+
+        print(f'Checking MFA models for {args.language}')
+        if error_signal:
+            error_signal.emit(f'Checking MFA models for {args.language} language')
+            QApplication.processEvents()
         os.system(f'mfa model download acoustic {args.language}')
         os.system(f'mfa model download dictionary {args.language}')
         command = f'mfa align {folder_path} {args.language} {args.language} {folder_path} --clean'
@@ -31,10 +33,18 @@ def align_action(args, progress_signal=None, error_signal=None):
         if not args.verbose:
             command += ' --quiet'
             command += ' > /dev/null 2>&1'
+
+        print(f'Aligning {len(filenames)} audio-transcription files')
+        if error_signal:
+            error_signal.emit(f'Aligning {len(filenames)} audio-transcription files')
+            QApplication.processEvents()
+
         os.system(command)
         print('Alignment complete')
         if progress_signal:
             progress_signal.emit(100)
+        if error_signal:
+            error_signal.emit('Alignment complete')
     except Exception as e:
         if error_signal:
             error_signal.emit(str(e))
@@ -55,6 +65,8 @@ def auto_action(args, progress_signal=None, error_signal=None):
         args.overwrite = False
         args.verbose = False
         align_action(args)
+        if error_signal:
+            error_signal.emit('Transcription and alignment complete')
     except Exception as e:
         if error_signal:
             error_signal.emit(str(e))
@@ -64,6 +76,8 @@ def auto_action(args, progress_signal=None, error_signal=None):
 
 def transcribe_action(args, progress_signal=None, error_signal=None):
     try:
+        if progress_signal:
+            progress_signal.emit(0)
         folder_path = utils.get_correct_path(args.input_folder)
         filenames = []
         for root, dirs, files in os.walk(folder_path):
@@ -74,10 +88,20 @@ def transcribe_action(args, progress_signal=None, error_signal=None):
 
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         print(f'Using device: {device}')
+        print('Loading Whisper model')
+        if error_signal:
+            error_signal.emit('Loading Whisper model')
+            QApplication.processEvents()
         model = whisper.load_model('medium')
 
         print(f'Transcribing {len(filenames)} files')
-        for filename in tqdm(filenames):
+        if error_signal:
+            error_signal.emit(f'Transcribing {len(filenames)} audio files')
+            QApplication.processEvents()
+    
+        for i, filename in enumerate(tqdm(filenames)):
+            if progress_signal:
+                progress_signal.emit(int(i / len(filenames) * 100))
             # print(f'Transcribing {filename}')
             audio = whisper.load_audio(filename)
             transcription = whisper.transcribe(model, audio)
@@ -86,6 +110,11 @@ def transcribe_action(args, progress_signal=None, error_signal=None):
                 f.write(transcription['text'])
 
         print('Transcription complete')
+        if progress_signal:
+            progress_signal.emit(100)
+        if error_signal:
+            error_signal.emit('Transcription complete')
+
     except Exception as e:
         if error_signal:
             error_signal.emit(str(e))
