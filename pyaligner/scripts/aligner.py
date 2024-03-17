@@ -1,73 +1,129 @@
 #!/usr/bin/env python
 import argparse
 import os
+import sys
 import torch
 import whisper
 from tqdm import tqdm
 from pyaligner.utils import utils
+from PyQt5.QtWidgets import QApplication
 
 
-def align_action(args):
-    # Get a list of all filenames in the input folder and its subdirectories
-    folder_path = utils.get_correct_path(args.input_folder)
-    filenames = []
-    for root, dirs, files in os.walk(folder_path):
-        for file in files:
-            if file.endswith('.txt'):
-                filenames.append(os.path.join(root, file))
-    filenames.sort()
-    print(f'Aligning {len(filenames)} audio-transcription files')
-    # Change directory to the input folder
-    os.chdir(folder_path)
-    print(f'Checking MFA models for {args.language} language')
-    os.system(f'mfa model download acoustic {args.language}')
-    os.system(f'mfa model download dictionary {args.language}')
-    command = f'mfa align {folder_path} {args.language} {args.language} {folder_path} --clean'
-    if args.overwrite:
-        command += ' --overwrite'
-    if not args.verbose:
-        command += ' --quiet'
-        command += ' > /dev/null 2>&1'
-    os.system(command)
-    print('Alignment complete')
+def align_action(args, progress_signal=None, error_signal=None):
+    try:
+        if progress_signal:
+            progress_signal.emit(0)
+        # Get a list of all filenames in the input folder and its subdirectories
+        folder_path = utils.get_correct_path(args.input_folder)
+        filenames = []
+        for root, dirs, files in os.walk(folder_path):
+            for file in files:
+                if file.endswith('.txt'):
+                    filenames.append(os.path.join(root, file))
+        filenames.sort()
 
-def auto_action(args):
-    language = transcribe_action(args)
-    language = whisper.tokenizer.LANGUAGES[language]
-    if language + '_mfa' in utils.mfa_languages:
-        args.language = language + '_mfa'
-    elif language + '_cv' in utils.mfa_languages:
-        args.language = language + '_cv'
-    else:
-        raise ValueError(f'Detected language {language} is not supported by MFA')
-    args.overwrite = False
-    args.verbose = False
-    align_action(args)
+        print(f'Checking MFA models for {args.language}')
+        if error_signal:
+            error_signal.emit(f'Checking MFA models for {args.language} language')
+            QApplication.processEvents()
+        os.system(f'mfa model download acoustic {args.language}')
+        os.system(f'mfa model download dictionary {args.language}')
+        command = f'mfa align {folder_path} {args.language} {args.language} {folder_path} --clean'
+        if args.overwrite:
+            command += ' --overwrite'
+        if not args.verbose:
+            command += ' --quiet'
+            command += ' > /dev/null 2>&1'
 
-def transcribe_action(args):
-    folder_path = utils.get_correct_path(args.input_folder)
-    filenames = []
-    for root, dirs, files in os.walk(folder_path):
-        for file in files:
-            if not file.endswith('.txt') and not file.endswith('.TextGrid'):
-                filenames.append(os.path.join(root, file))
-    filenames.sort()
+        print(f'Aligning {len(filenames)} audio-transcription files')
+        if error_signal:
+            error_signal.emit(f'Aligning {len(filenames)} audio-transcription files')
+            QApplication.processEvents()
 
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    print(f'Using device: {device}')
-    model = whisper.load_model('medium')
+        os.system(command)
+        print('Alignment complete')
+        if progress_signal:
+            progress_signal.emit(100)
+        if error_signal:
+            error_signal.emit('Alignment complete')
+    except Exception as e:
+        if error_signal:
+            error_signal.emit(str(e))
+        else:
+            raise e
 
-    print(f'Transcribing {len(filenames)} files')
-    for filename in tqdm(filenames):
-        # print(f'Transcribing {filename}')
-        audio = whisper.load_audio(filename)
-        transcription = whisper.transcribe(model, audio)
-        transcription_file = os.path.splitext(filename)[0] + '.txt'
-        with open(str(transcription_file), 'w') as f:
-            f.write(transcription['text'])
 
-    print('Transcription complete')
+def auto_action(args, progress_signal=None, error_signal=None):
+    try:
+        language = transcribe_action(args)
+        language = whisper.tokenizer.LANGUAGES[language]
+        if language + '_mfa' in utils.mfa_languages:
+            args.language = language + '_mfa'
+        elif language + '_cv' in utils.mfa_languages:
+            args.language = language + '_cv'
+        else:
+            raise ValueError(f'Detected language {language} is not supported by MFA')
+        args.overwrite = False
+        args.verbose = False
+        align_action(args)
+        if error_signal:
+            error_signal.emit('Transcription and alignment complete')
+    except Exception as e:
+        if error_signal:
+            error_signal.emit(str(e))
+        else:
+            raise e
+
+
+def transcribe_action(args, progress_signal=None, error_signal=None):
+    try:
+        if progress_signal:
+            progress_signal.emit(0)
+        folder_path = utils.get_correct_path(args.input_folder)
+        filenames = []
+        for root, dirs, files in os.walk(folder_path):
+            for file in files:
+                if not file.endswith('.txt') and not file.endswith('.TextGrid'):
+                    filenames.append(os.path.join(root, file))
+        filenames.sort()
+
+        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        print(f'Using device: {device}')
+        print('Loading Whisper model')
+        if error_signal:
+            error_signal.emit('Loading Whisper model')
+            QApplication.processEvents()
+        model = whisper.load_model('medium')
+
+        print(f'Transcribing {len(filenames)} files')
+        if error_signal:
+            error_signal.emit(f'Transcribing {len(filenames)} audio files')
+            QApplication.processEvents()
+    
+        for i, filename in enumerate(tqdm(filenames)):
+            if progress_signal:
+                progress_signal.emit(int(i / len(filenames) * 100))
+            # print(f'Transcribing {filename}')
+            audio = whisper.load_audio(filename)
+            transcription = whisper.transcribe(model, audio)
+            transcription_file = os.path.splitext(filename)[0] + '.txt'
+            with open(str(transcription_file), 'w') as f:
+                f.write(transcription['text'])
+
+        print('Transcription complete')
+        if progress_signal:
+            progress_signal.emit(100)
+        if error_signal:
+            error_signal.emit('Transcription complete')
+
+    except Exception as e:
+        if error_signal:
+            error_signal.emit(str(e))
+        else:
+            raise e
+
     return transcription['language']
+
 
 def rename_action(args):
     # Get all filenames in the input folder
@@ -99,6 +155,15 @@ def rename_action(args):
         os.rename(os.path.join(folder_path, filename), os.path.join(folder_path, new_filename))    
 
     print('Renaming complete')
+
+
+def gui_action(args):
+    from pyaligner.scripts.gui import PyalignerGUI
+    app = QApplication(sys.argv)
+    gui = PyalignerGUI()
+    gui.show()
+    sys.exit(app.exec_())
+
 
 def main():
     parser = argparse.ArgumentParser(prog='pyaligner', description='Pyaligner command line interface')
@@ -134,6 +199,11 @@ def main():
         'https://mfa-models.readthedocs.io/en/latest/acoustic/index.html#acoustic '
         'for a list of available acoustic models')
     auto_parser.set_defaults(func=auto_action)
+
+    gui_parser = subparsers.add_parser('gui', 
+        help='Start the graphical user interface')
+    gui_parser.set_defaults(func=gui_action)
+
 
     # Help menu for 'rename' subcommand
     rename_parser = subparsers.add_parser('rename', 

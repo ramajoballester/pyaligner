@@ -1,5 +1,56 @@
-# pyaligner
+# Pyaligner
 Automatic audio transcriptor and aligner
+
+# Installation
+
+## Install Anaconda / Miniconda
+
+Install (Anaconda)[https://docs.anaconda.com/free/anaconda/install/index.html] or (Miniconda)[https://docs.anaconda.com/free/miniconda/miniconda-install/]
+
+
+## Install dependencies
+
+Once conda is installed, create a new environment, (e.g. pyaligner_env) and install the dependencies:
+
+```bash
+conda activate base
+conda install -c conda-forge mamba
+```
+
+After that, you might need to restart the terminal to activate mamba.
+
+Then, create the environment and install the dependencies:
+
+```bash
+mamba create -n pyaligner_env -c conda-forge python==3.9.* montreal-forced-aligner pyqt
+```
+
+## Clone the repository
+
+Activate the environment and clone the repository:
+
+```bash
+mamba activate pyaligner_env
+git clone https://github.com/ramajoballester/pyaligner.git
+cd pyaligner
+pip install .
+```
+
+
+# Usage
+
+Do not forget to activate the environment:
+
+```bash
+mamba activate pyaligner_env
+```
+
+before running the commands:
+
+```bash
+pyaligner gui
+```
+
 
 
 # Requirements
