@@ -5,7 +5,19 @@ Automatic audio transcriptor and aligner
 
 ## Install Anaconda / Miniconda
 
-Install [Anaconda](https://docs.anaconda.com/free/anaconda/install/index.html) or [Miniconda](https://docs.anaconda.com/free/miniconda/miniconda-install/)
+If you don't have conda installed, install [Anaconda](https://docs.anaconda.com/free/anaconda/install/index.html) or [Miniconda](https://docs.anaconda.com/free/miniconda/miniconda-install/).
+
+If you already have conda installed, update it:
+
+```bash
+conda update conda
+```
+
+and uninstall the packages in base environment (be careful with this step if you use base environment for other projects):
+
+```bash
+conda install --rev 0
+```
 
 
 ## Install dependencies
