@@ -13,6 +13,7 @@ def align_action(args, progress_signal=None, error_signal=None):
     try:
         if progress_signal:
             progress_signal.emit(0)
+            QApplication.processEvents()
         # Get a list of all filenames in the input folder and its subdirectories
         folder_path = utils.get_correct_path(args.input_folder)
         filenames = []
@@ -44,8 +45,10 @@ def align_action(args, progress_signal=None, error_signal=None):
         print('Alignment complete')
         if progress_signal:
             progress_signal.emit(100)
+            QApplication.processEvents()
         if error_signal:
             error_signal.emit('Alignment complete')
+            QApplication.processEvents()
     except Exception as e:
         if error_signal:
             error_signal.emit(str(e))
@@ -68,9 +71,11 @@ def auto_action(args, progress_signal=None, error_signal=None):
         align_action(args)
         if error_signal:
             error_signal.emit('Transcription and alignment complete')
+            QApplication.processEvents()
     except Exception as e:
         if error_signal:
             error_signal.emit(str(e))
+            QApplication.processEvents()
         else:
             raise e
 
@@ -79,6 +84,7 @@ def transcribe_action(args, progress_signal=None, error_signal=None):
     try:
         if progress_signal:
             progress_signal.emit(0)
+            QApplication.processEvents()
         folder_path = utils.get_correct_path(args.input_folder)
         filenames = []
         for root, dirs, files in os.walk(folder_path):
@@ -104,6 +110,7 @@ def transcribe_action(args, progress_signal=None, error_signal=None):
         for i, filename in enumerate(tqdm(filenames)):
             if progress_signal:
                 progress_signal.emit(int(i / len(filenames) * 100))
+                QApplication.processEvents()
             # print(f'Transcribing {filename}')
             audio = whisper.load_audio(filename)
             transcription = whisper.transcribe(model, audio)
@@ -114,14 +121,17 @@ def transcribe_action(args, progress_signal=None, error_signal=None):
         print('Transcription complete')
         if progress_signal:
             progress_signal.emit(100)
+            QApplication.processEvents()
         if error_signal:
             error_signal.emit('Transcription complete')
+            QApplication.processEvents()
 
         return transcription['language']
 
     except Exception as e:
         if error_signal:
             error_signal.emit(str(e))
+            QApplication.processEvents()
         else:
             raise e
 
