@@ -9,12 +9,12 @@ build:
       - bash ./docs/scripts/pre_install.sh
 
 # Equivalent to `pip install .[docs]`
-# python:
-#   install:
-#     - method: pip
-#       path: ./packages
-#       extra_requirements:
-#         - docs
+python:
+  install:
+    - method: pip
+      path: ./packages
+      extra_requirements:
+        - docs
   # install:
   #   - requirements: docs/requirements.txt
 
