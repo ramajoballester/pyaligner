@@ -13,11 +13,13 @@ python:
   install:
     - method: pip
       path: .
-      requirements: docs/requirements.txt
-  #     extra_requirements:
-  #       - docs
-  # install:
-      
+      # extra_requirements:
+      #   - docs
+      # Install with no dependencies
+      no_deps: true
+
+  install:
+    - requirements: docs/requirements.txt
 
 sphinx:
   configuration: docs/source/conf.py
