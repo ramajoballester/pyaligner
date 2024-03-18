@@ -83,8 +83,9 @@ def transcribe_action(args, progress_signal=None, error_signal=None):
         filenames = []
         for root, dirs, files in os.walk(folder_path):
             for file in files:
-                if not file.endswith('.txt') and not file.endswith('.TextGrid'):
-                    filenames.append(os.path.join(root, file))
+                if (not file.endswith('.txt') and not file.endswith('.TextGrid')
+                    and not file.startswith('.')):
+                    filenames.append(os.path.join(root, file))        
         filenames.sort()
 
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
