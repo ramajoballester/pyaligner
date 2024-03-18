@@ -2,9 +2,11 @@ import sys
 import os
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QVBoxLayout, QWidget, QFileDialog, QSizePolicy, QSpacerItem, QProgressBar
 from PyQt5.QtCore import Qt, QThread, pyqtSignal
+from PyQt5.QtGui import QIcon
 import time
 import argparse
 from pyaligner.scripts import aligner
+import pyaligner
 
 
 class PyalignerGUI(QMainWindow):
@@ -16,6 +18,11 @@ class PyalignerGUI(QMainWindow):
         super().__init__()
 
         self.setWindowTitle("Pyaligner")
+        
+        # Set window icon
+        icon_path = os.path.join(pyaligner.__path__[0], '..', 'docs', 
+                                 'images', 'favicon-192x192.png')
+        self.setWindowIcon(QIcon(icon_path))
 
         self.input_folder = None
 
@@ -58,6 +65,8 @@ class PyalignerGUI(QMainWindow):
 
         self.progress_label = QLabel("")
         layout.addWidget(self.progress_label)
+        # self.progress_label.setWordWrap(True)
+        # self.progress_label.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
         self.progress_bar = QProgressBar()
         layout.addWidget(self.progress_bar)
         self.progress_bar.hide()
