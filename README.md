@@ -29,13 +29,14 @@ conda activate base
 conda install -c conda-forge mamba
 ```
 
-After that, you might need to run `mamba init` and restart the terminal to activate mamba.
-
 Then, create the environment and install the dependencies:
 
 ```bash
 mamba create -n pyaligner_env -c conda-forge python==3.9.* montreal-forced-aligner pyqt
 ```
+
+After that, you might need to run `mamba init` and restart the terminal to activate mamba.
+
 
 ## Clone the repository
 
