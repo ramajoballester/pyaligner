@@ -8,7 +8,7 @@ version = '0.1.0'
 authors = [
     {name='Álvaro Ramajo-Ballester', email='aramajo@ing.uc3m.es'},
 ]
-description = 'Automatic audio transcriptor and aligner'
+description = 'Automatic audio transcriptor and audi-text aligner'
 readme = 'README.md'
 # requires-python = '>=3.8,<3.10'
 requires-python = '>=3.7'
@@ -23,6 +23,8 @@ classifiers = [
     'License :: OSI Approved :: GNU Affero General Public License v3',
     'Natural Language :: English',
     'Operating System :: POSIX :: Linux',
+    'Operating System :: MacOS :: MacOS X',
+    # 'Operating System :: Microsoft :: Windows',
 ]
 
 keywords = [
@@ -31,20 +33,15 @@ keywords = [
     'deep-learning',
     'audio',
     'audio-transcription',
-    'audio-alignment'
+    'audio-text-alignment'
 ]
 
 dependencies = [
-    # 'torch',
-    # 'mmcv>=2.0.0rc4',
-    # 'mmdet>=3.0.0',
-    # 'mmdet3d>=1.1.0',
-    # 'mmengine',
-    # 'seaborn'
     'openai-whisper',
     'montreal-forced-aligner',
     'ipykernel',
-    'PyQt5',
+    # 'PyQt5',
+    'pyqt'
 ]
 
 [project.optional-dependencies]
@@ -59,15 +56,11 @@ docs = [
     'sphinx-tabs',
     'numpydoc==1.5.0',
     'myst-parser==2.0.0',
-    # 'recommonmark==0.7.1',
-    # 'sphinx_design',
-    # 'furo',
-    # 'sphinx-material'
 ]
 full = ['pyaligner[docs]']
 
 [tool.setuptools.packages]
-find = {namespaces = false, exclude = ['test']}
+find = {namespaces = false, exclude = ['docs']}
 
 [project.scripts]
 pyaligner = "pyaligner.scripts.aligner:main"

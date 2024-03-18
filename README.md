@@ -109,3 +109,8 @@ libxcb-cursor0
 ```bash
 sudo apt upgrade libgtk-3-0
 ```
+
+Mac:
+
+xcode-select --install
+

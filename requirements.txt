@@ -1,0 +1,4 @@
+openai-whisper
+montreal-forced-aligner
+ipykernel
+pyqt
