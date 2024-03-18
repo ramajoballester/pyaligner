@@ -116,13 +116,13 @@ def transcribe_action(args, progress_signal=None, error_signal=None):
         if error_signal:
             error_signal.emit('Transcription complete')
 
+        return transcription['language']
+
     except Exception as e:
         if error_signal:
             error_signal.emit(str(e))
         else:
             raise e
-
-    return transcription['language']
 
 
 def rename_action(args):
