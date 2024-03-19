@@ -48,6 +48,7 @@ dev = [
     'ipykernel',
     # 'pyqt',
     'twine',
+    'build',
 ]
 
 docs = [

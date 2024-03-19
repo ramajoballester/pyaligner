@@ -6,9 +6,26 @@ Automatic installation
 
 To install the package, you can use the following command:
 
-.. code-block:: bash
+.. tabs::
 
-   To be defined
+   .. group-tab:: Linux
+      Open a terminal and run the following command:
+
+      .. code-block:: bash
+
+         sudo apt update && sudo apt install -y wget ffmpeg
+         wget "https://github.com/ramajoballester/pyaligner/releases/latest/download/PyAligner-$(uname)-$(uname -m).sh"
+         bash PyAligner-$(uname)-$(uname -m).sh
+
+
+   .. group-tab:: MacOS
+      Open a terminal and run the following command:
+
+      .. code-block:: bash
+
+         brew update && brew install -y wget ffmpeg
+         wget "https://github.com/ramajoballester/pyaligner/releases/latest/download/PyAligner-$(uname)-$(uname -m).sh"
+         bash PyAligner-$(uname)-$(uname -m).sh
 
 
 Manual installation
