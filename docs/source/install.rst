@@ -27,6 +27,11 @@ To install the package, you can use the following command:
          wget "https://github.com/ramajoballester/pyaligner/releases/latest/download/PyAligner-$(uname)-$(uname -m).sh"
          bash PyAligner-$(uname)-$(uname -m).sh
 
+   .. group-tab:: Windows
+         
+         Not available yet.
+         
+
 
 Manual installation
 +++++++++++++++++++
