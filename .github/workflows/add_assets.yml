@@ -1,4 +1,4 @@
-name: Main
+name: Add_assets
 
 on: push
 
@@ -18,4 +18,4 @@ jobs:
         with:
           files: |
             install/PyAligner-Linux-x86_64.sh
-            install/*
+            install/PyAligner-MacOSX-x86_64.sh
