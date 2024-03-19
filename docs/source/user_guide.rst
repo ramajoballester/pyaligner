@@ -1,12 +1,16 @@
 User guide
 ==========
 
-Before using PyAligner, do not forget to install the software as 
+Before using PyAligner, do not forget to install it as 
 explained in the :ref:`installation` section.
 
 .. warning::
    Do not forget to activate the virtual environment before running any 
-   command
+   command:
+
+   .. code-block:: bash
+
+      mamba activate pyaligner_env
 
 
 Graphical User Interface
@@ -26,7 +30,7 @@ software.
 
 |
 
-All the commands will perform the tasks to all the files in the specified 
+All the commands will perform the specified tasks to all the files in the specified 
 folder and its subfolders. 
 
 
@@ -78,11 +82,8 @@ and `acoustic models <https://mfa-models.readthedocs.io/en/latest/acoustic/index
 The input folder must contain audio files and their corresponding transcription 
 text files. The transcription text files must have the same name as the 
 audio files, but with a different extension.
-
 For example, if you have an audio file called ``audio.wav``, the transcription
-file must be called ``audio.txt``.
-
-You can get more information with:
+file must be called ``audio.txt``. You can get more information with:
 
 .. code-block:: bash
 

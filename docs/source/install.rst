@@ -31,6 +31,21 @@ To install the package, you can use the following command:
          
          Not available yet.
          
+You can now close the terminal and open a new one to install PyAligner.
+
+PyAligner
+---------
+
+Finally, install the PyAligner package:
+
+.. code-block:: bash
+
+   mamba activate pyaligner_env
+   pip install pyaligner
+
+
+PyAligner is now installed and ready to use. Check the :ref:`user guide` 
+chapter for more information.
 
 
 Manual installation

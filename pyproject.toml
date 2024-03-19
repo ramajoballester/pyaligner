@@ -4,7 +4,7 @@ build-backend = 'setuptools.build_meta'
 
 [project]
 name = 'pyaligner'
-version = '0.1.2'
+version = '0.1.1'
 authors = [
     {name='Álvaro Ramajo-Ballester', email='aramajo@ing.uc3m.es'},
 ]
@@ -49,6 +49,7 @@ dev = [
     # 'pyqt',
     'twine',
     'build',
+    'bump-my-version',
 ]
 
 docs = [
@@ -67,6 +68,24 @@ find = {namespaces = false, exclude = ['docs']}
 
 [project.scripts]
 pyaligner = "pyaligner.scripts.aligner:main"
+
+[tool.bumpversion]
+current_version = "0.1.1"
+parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)"
+serialize = ["{major}.{minor}.{patch}"]
+search = "{current_version}"
+replace = "{new_version}"
+regex = false
+ignore_missing_version = false
+ignore_missing_files = false
+tag = false
+sign_tags = false
+tag_name = "v{new_version}"
+tag_message = "Bump version: {current_version} → {new_version}"
+allow_dirty = false
+commit = false
+message = "Bump version: {current_version} → {new_version}"
+commit_args = ""
 
 
 [project.urls]
