@@ -1,0 +1,8 @@
+name: pyaligner_env
+channels:
+  - defaults
+dependencies:
+  - python=3.9
+  - montreal-forced-aligner
+  - pyqt
+prefix: pyaligner_env

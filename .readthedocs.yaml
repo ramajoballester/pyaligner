@@ -3,10 +3,14 @@ version: "2"
 build:
   os: "ubuntu-22.04"
   tools:
-    python: "3.10"
-  jobs:
-    pre_install:
-      - bash ./docs/scripts/pre_install.sh
+    python: "mambaforge-22.9"
+  # jobs:
+  #   pre_install:
+  #     - bash ./docs/scripts/pre_install.sh
+
+
+conda:
+  environment: environment.yml
 
 # Equivalent to `pip install .[docs]`
 python:
