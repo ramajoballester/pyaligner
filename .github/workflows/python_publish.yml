@@ -9,9 +9,13 @@
 name: Upload Python Package
 
 on:
-  release:
-    types: [published]
-    branches: [main]
+  # release:
+  #   types: [published]
+    # branches: [main]
+
+  workflow_run:
+    workflows: ["Add assets"]
+    types: [completed]
 
 permissions:
   contents: read
