@@ -18,7 +18,6 @@ python:
     - method: pip
       path: .
       extra_requirements:
-        - rtd
         - docs
       # Install with no dependencies
       # no_deps: true
