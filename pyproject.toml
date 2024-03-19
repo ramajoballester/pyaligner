@@ -87,6 +87,12 @@ commit = false
 message = "Bump version: {current_version} → {new_version}"
 commit_args = ""
 
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
+
+[[tool.bumpversion.files]]
+filename = "docs/source/conf.py"
+
 
 [project.urls]
 'Homepage' = 'https://github.com/ramajoballester/pyaligner'
