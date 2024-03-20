@@ -9,7 +9,7 @@
   <img src="docs/images/gui_example.png" alt="Your Image" width="200">
 </p>
 
-Check the [documentation](https://ramajoballester.github.io/pyaligner/) for more information about the installation and the complete user guide.
+Check the [documentation](https://pyaligner.readthedocs.io/en/latest/) for more information about the installation and the complete user guide.
 
 # Installation
 
@@ -19,7 +19,7 @@ You can install the library via pip:
 pip install pyaligner
 ```
 
-Although it is recommended to install it following the [installation guide](file:///home/breaststroker/alvaro/pyaligner/docs/build/html/install.html).
+Although it is recommended to install it following the [installation guide](https://pyaligner.readthedocs.io/en/latest/install.html).
 
 
 # Command Line Interface
