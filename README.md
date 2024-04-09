@@ -6,7 +6,7 @@
 **PyAligner** is a python library to automatically transcribe audio files and align them with the transcription. Is is based on OpenAI's [Whisper](https://github.com/openai/whisper) model and the [Montreal Forced Aligner (MFA)](https://montreal-forced-aligner.readthedocs.io/en/latest/) library. It also provides a friendly graphical user interface to facilitate the use of the library:
 
 <p align="center">
-  <img src="docs/images/gui_example.png" alt="Your Image" width="200">
+  <img src="https://github.com/ramajoballester/pyaligner/blob/fdb6b6d8605dee9bb4f1c9c62210249ffdcc8631/docs/images/gui_example.png?raw=true" alt="Your Image" width="200">
 </p>
 
 Check the [documentation](https://pyaligner.readthedocs.io/en/latest/) for more information about the installation and the complete user guide.
