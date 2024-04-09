@@ -3,7 +3,9 @@ import argparse
 import os
 import sys
 import torch
+import time
 import whisper
+import subprocess
 from tqdm import tqdm
 from pyaligner.utils import utils
 from PyQt5.QtWidgets import QApplication
@@ -17,11 +19,42 @@ def align_action(args, progress_signal=None, error_signal=None):
         # Get a list of all filenames in the input folder and its subdirectories
         folder_path = utils.get_correct_path(args.input_folder)
         filenames = []
+        audio_filenames = []
         for root, dirs, files in os.walk(folder_path):
             for file in files:
                 if file.endswith('.txt'):
                     filenames.append(os.path.join(root, file))
+                elif file.endswith(tuple(utils.audio_formats)):
+                    audio_filenames.append(os.path.join(root, file))
+                
         filenames.sort()
+        audio_filenames.sort()
+
+        # Count the number of audio files whose extension is in the blacklist
+        audio_blacklist_count = sum([1 for audio_filename in audio_filenames 
+                                    if audio_filename.endswith(tuple(utils.audio_formats_blacklist))])
+        if audio_blacklist_count > 0:
+            print(f'Converting {audio_blacklist_count} audio files to mp3 format')
+            if error_signal:
+                error_signal.emit(f'Converting {audio_blacklist_count} audio files to mp3 format')
+                QApplication.processEvents()
+
+            if progress_signal:
+                progress_signal.emit(0)
+                QApplication.processEvents()
+            # If any audio_filename is in the utils.audio_formats_blacklist, convert it to mp3 with ffmpeg
+            for audio_filename in audio_filenames:
+                if os.path.splitext(audio_filename)[1][1:] in utils.audio_formats_blacklist:
+                    new_audio_filename = os.path.splitext(audio_filename)[0] + '.mp3'
+                    audio_filename_idx = audio_filenames.index(audio_filename)
+                    command = f'ffmpeg -i {audio_filename} -q:a 0 {new_audio_filename}'
+                    os.system(command)
+                    os.remove(audio_filename)
+                    audio_filenames[audio_filename_idx] = new_audio_filename
+
+                    if progress_signal:
+                        progress_signal.emit(int(audio_filename_idx / len(audio_filenames) * 100))
+                        QApplication.processEvents()
 
         print(f'Checking MFA models for {args.language}')
         if error_signal:
@@ -41,7 +74,12 @@ def align_action(args, progress_signal=None, error_signal=None):
             error_signal.emit(f'Aligning {len(filenames)} audio-transcription files')
             QApplication.processEvents()
 
-        os.system(command)
+        # os.system(command)
+        exit_state = subprocess.run(command, shell=True, check=True)
+        if exit_state.returncode != 0:
+            raise ValueError(f'Error aligning files: {exit_state.stderr}')
+
+
         print('Alignment complete')
         if progress_signal:
             progress_signal.emit(100)

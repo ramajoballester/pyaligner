@@ -39,3 +39,12 @@ mfa_languages = [
     'uyghur_cv', 'uzbek_cv', 'vietnamese_cv', 'vietnamese_hanoi_mfa', 
     'vietnamese_ho_chi_minh_city_mfa', 'vietnamese_hue_mfa', 'vietnamese_mfa'
 ]
+
+audio_formats = ['wav', 'mp3', 'flac', 'm4a', 'ogg', 'wma', 'aiff', 'aif', 
+    'au', 'raw', 'ra', 'rm', 'mid', 'midi', 'aac', 'mka', 'opus', 'ac3', 
+    'amr', 'ape', 'awb', 'dct', 'dss', 'dvf', 'gsm', 'iklax', 'ivs', 'm4p', 
+    'mmf', 'mpc', 'msv', 'nmf', 'nsf', 'ogg', 'oga', 'mogg', 'opus', 'ra', 
+    'rm', 'raw', 'sln', 'tta', 'vox', 'wav', 'wma', 'wv', 'webm', '8svx', 
+    'cda']
+
+audio_formats_blacklist = ['m4a']
