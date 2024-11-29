@@ -4,7 +4,7 @@ build-backend = 'setuptools.build_meta'
 
 [project]
 name = 'pyaligner'
-version = '0.1.3'
+version = '0.2.0'
 authors = [
     {name='Álvaro Ramajo-Ballester', email='aramajo@ing.uc3m.es'},
 ]
@@ -70,7 +70,7 @@ find = {namespaces = false, exclude = ['docs']}
 pyaligner = "pyaligner.scripts.aligner:main"
 
 [tool.bumpversion]
-current_version = "0.1.3"
+current_version = "0.2.0"
 parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)"
 serialize = ["{major}.{minor}.{patch}"]
 search = "{current_version}"
