@@ -62,7 +62,7 @@ def align_action(args, progress_signal=None, error_signal=None):
             QApplication.processEvents()
         os.system(f'mfa models download acoustic {args.language}')
         os.system(f'mfa models download dictionary {args.language}')
-        command = f'mfa align {folder_path} {args.language} {args.language} {folder_path} --clean'
+        command = f'mfa align "{folder_path}" {args.language} {args.language} {folder_path} --clean'
         if args.overwrite:
             command += ' --overwrite'
         if not args.verbose:
